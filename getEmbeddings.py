@@ -11,7 +11,8 @@ import re
 import string
 import pandas as pd
 from gensim.models import Doc2Vec
-from gensim.models.doc2vec import LabeledSentence
+# Change "from gensim.models.doc2vec import LabeledSentence" to "from gensim.models.doc2vec import TaggedDocument"
+from gensim.models.doc2vec import TaggedDocument
 from gensim import utils
 from nltk.corpus import stopwords
 
@@ -36,8 +37,9 @@ def cleanup(text):
 
 def constructLabeledSentences(data):
     sentences = []
+    # change LabeledSentence to TaggedDocument
     for index, row in data.iteritems():
-        sentences.append(LabeledSentence(utils.to_unicode(row).split(), ['Text' + '_%s' % str(index)]))
+        sentences.append(TaggedDocument(utils.to_unicode(row).split(), ['Text' + '_%s' % str(index)]))
     return sentences
 
 
@@ -62,7 +64,10 @@ def getEmbeddings(path,vector_dimension=300):
     text_model = Doc2Vec(min_count=1, window=5, vector_size=vector_dimension, sample=1e-4, negative=5, workers=7, epochs=10,
                          seed=1)
     text_model.build_vocab(x)
-    text_model.train(x, total_examples=text_model.corpus_count, epochs=text_model.iter)
+    #text_model.train(x, total_examples=text_model.corpus_count, epochs=text_model.iter)
+    # Hard code the value of epochs to 1
+    # same accuracy obtained with epochs = 1 and epochs = 5
+    text_model.train(x, total_examples=text_model.corpus_count, epochs=1)
 
     train_size = int(0.8 * len(x))
     test_size = len(x) - train_size

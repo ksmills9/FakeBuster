@@ -7,7 +7,9 @@ The TensorFlow version of neural network
 """
 
 import numpy as np
-import tensorflow as tf
+#import tensorflow as tf
+import tensorflow.compat.v1 as tf
+tf.disable_v2_behavior()
 from getEmbeddings import getEmbeddings
 import matplotlib.pyplot as plt
 import scikitplot.plotters as skplt

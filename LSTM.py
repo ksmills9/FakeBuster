@@ -21,7 +21,7 @@ import scikitplot.plotters as skplt
 
 
 top_words = 5000
-epoch_num = 5
+epoch_num = 1
 batch_size = 64
 
 def plot_cmat(yte, ypred):
@@ -36,11 +36,11 @@ if not os.path.isfile('./xtr_shuffled.npy') or \
     not os.path.isfile('./yte_shuffled.npy'):
     getEmbeddings.clean_data()
 
-
-xtr = np.load('./xtr_shuffled.npy')
-xte = np.load('./xte_shuffled.npy')
-y_train = np.load('./ytr_shuffled.npy')
-y_test = np.load('./yte_shuffled.npy')
+# must set allow_pickle = true 
+xtr = np.load('./xtr_shuffled.npy',allow_pickle=True)
+xte = np.load('./xte_shuffled.npy',allow_pickle=True)
+y_train = np.load('./ytr_shuffled.npy',allow_pickle=True)
+y_test = np.load('./yte_shuffled.npy',allow_pickle=True)
 
 cnt = Counter()
 x_train = []
@@ -118,5 +118,11 @@ scores = model.evaluate(X_test, y_test, verbose=0)
 print("Accuracy= %.2f%%" % (scores[1]*100))
 
 # Draw the confusion matrix
+'''
 y_pred = model.predict_classes(X_test)
 plot_cmat(y_test, y_pred)
+'''
+
+predict_x=model.predict(X_test) 
+classes_x=np.argmax(predict_x,axis=1)
+plot_cmat(y_test, classes_x)

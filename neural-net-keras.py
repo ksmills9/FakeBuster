@@ -14,7 +14,9 @@ from keras import backend as K
 from keras.utils import np_utils
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, LSTM, Embedding, Input, RepeatVector
-from keras.optimizers import SGD
+#from keras.optimizers import SGD
+from tensorflow.keras.optimizers import SGD
+
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
 import scikitplot.plotters as skplt
@@ -75,8 +77,11 @@ score = model.evaluate(x_test, encoded_y_test)
 print("")
 print("Accuracy = " + format(score[1]*100, '.2f') + "%")   # 92.69%
 
-probabs = model.predict_proba(x_test)
+##
+probabs = model.predict(x_test)
 y_pred = np.argmax(probabs, axis=1)
  
 # Draw the confusion matrix
+
 plot_cmat(y_test, y_pred)
+
